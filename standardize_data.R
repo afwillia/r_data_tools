@@ -10,7 +10,7 @@
 ##################################
 
 
-standardize_data <- function(data, subset=NA, rename=list(), add_cols=list()) {
+standardize_data <- function(data, keep_cols=NA, rename=list(), add_cols=list()) {
   
   # Read in data based on filetype
   if (any(class(data) == "data.frame")) ds <- data
@@ -26,8 +26,8 @@ standardize_data <- function(data, subset=NA, rename=list(), add_cols=list()) {
   if (length(add_cols)>0) ds <- cbind(ds, add_cols)
   
   # After adding columns, check if any subset columns are not present. Fill with NA and warn
-  if (!all(subset %in% names(ds))){
-    mc <- subset[!subset %in% names(ds)]
+  if (!all(keep_cols %in% names(ds))){
+    mc <- keep_cols[!keep_cols %in% names(ds)]
     names(mc) <-  mc
     
     add_mc <- lapply(mc, function(x) NA)
@@ -37,7 +37,7 @@ standardize_data <- function(data, subset=NA, rename=list(), add_cols=list()) {
   }
   
   # Subset data based on subset vector
-  if (any(!is.na(subset))) ds <- ds[,subset]
+  if (any(!is.na(keep_cols))) ds <- ds[,keep_cols]
 
   ds
   
